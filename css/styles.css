@@ -1,0 +1,29 @@
+html, body  {
+    height:100%;
+}
+
+#map{
+	/*width:100%;*/
+    height:calc(100% - 0);
+    height:500px;
+    position:absolute;
+    top:50px;
+    bottom:0;
+    overflow:hidden;
+    left: 0px;
+    
+}
+
+#main, #main>.row {
+
+	height:100%;
+}
+
+#right {top:50px;
+	height:100%;
+}
+
+.navbar-form {
+    margin: 8px -15px;
+    padding: 10px 15px;
+}

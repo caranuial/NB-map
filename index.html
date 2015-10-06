@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<title>Neighborhood map</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" href="js/lib/bootstrap-3.3.5-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+	
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="navbar navbar-fixed-top">
+					
+						<form action="#" class="navbar-form">
+				      		<div class="form-group" style="display:inline">
+				      			<div class="input-group">
+				      				<input type="text" class="form-control" placeholder="What are searching for?" data-bind="textInput: searchedPoint, event: {keyup: search}"><!-- -->
+				      				<div class="input-group-btn" style="width:1%">
+				      					<div class="btn btn-default">
+				      						<i class="glyphicon glyphicon-search"></i>
+				      					</div>
+				      				</div>
+					      		</div>
+							</div>
+				  		</form>
+					
+				</div>	
+			<div>		
+		</div>
+	
+	<div class="row" id="right">
+		<div id="map" class="col-xs-12 col-sm-9 col-md-9 col-lg-9 "></div>
+	
+		<div class="container-fluid" id="main">	
+		
+			
+			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" data-bind="text: wikiPage">
+				tu je len tak random text
+			</div>
+		</div>
+	</div>
+
+	<div class="row" >
+		<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 btn-group btn-group-vertical" data-bind="foreach: points">
+
+			<button type="button" class="btn-info btn-block" style=" margin-top: 0px;"><div data-bind="text: name"></div></button>
+		</div>
+	</div>
+	<br><br>
+
+	
+<script src="js/lib/jquery-1.11.3.js"></script>
+
+<script src="js/lib/bootstrap-3.3.5-dist/js/bootstrap.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js"></script>
+<script src="js/lib/knockout-3.3.0.js"></script>
+<script src="js/app.js"></script>
+
+
+</body>
+</html>
