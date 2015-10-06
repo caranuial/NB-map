@@ -308,58 +308,7 @@ var viewModel = function() {
         });
     }
 
-    //console.dir(this.points()[1].name());
-    //console.dir(searchedPoint());
-
-/*    this.setSearchedPoint = function(clicked){
-        self.searchedPoint(clicked);
-    }
-*/
-    //self.searchLocations = function () {
-
-        /* Convert search input to lowercase in order to compare like
-        characters in each break and location name & store in a new var*/
-    //    var search = self.searchedPoint().toLowerCase();
-
-        /* Remove all location objects from obs. array, so that only objects
-        which match the search can be re-added to the array and subsequently
-        rendered in the View*/
-        //self.locationGrid.removeAll();
-
-        /* Compare each object's break name and location to the search terms.
-         If it matches, re-add it to the obs. array and render in the View.
-         If it doesn't match, then it isnt re-added*/
-    /*    self.LocationArray.forEach(function(obj) {
-
-            if (obj.breakName.toLowerCase().indexOf(search) >= 0) {
-
-              self.locationGrid.push(obj);
-
-            } else if (obj.location.toLowerCase().indexOf(search) >= 0) {
-
-              self.locationGrid.push(obj);
-            }
-        });
-
-        // Set the map bounds & map position for every search
-        setMapBounds();
-
-        /* Compare each marker's title, which holds the break and location name, to the search terms. If it matches, set the marker as visible.
-        If it doesn't match, make setVisible false*/
-/*        markers.forEach(function(marker) {
-
-            if (marker.title.toLowerCase().indexOf(search) >= 0) {
-
-              marker.setVisible(true);
-
-            } else {
-
-              marker.setVisible(false);
-
-            }
-
-        });
-    }*/
+   
 
 
 
