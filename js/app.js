@@ -31,6 +31,7 @@ function point(data) {
             return function() {
                 toggleBounce(marker);
                 vm.searchForWikiPage(marker);
+                //vm.disableMarkers(marker);
             }           
         })(marker));
     //    marker.addListener('click', viewModel.setSearchedPoint(this));
@@ -51,12 +52,10 @@ function point(data) {
 };
 
 function toggleBounce(marker) {
-    console.log(marker);
-        marker.setAnimation(google.maps.Animation.BOUNCE);
-        window.setTimeout(function(){
-            marker.setAnimation(null);        
-        },2000);
-     
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    window.setTimeout(function(){
+        marker.setAnimation(null);        
+    },2000); 
 };
 
 
@@ -120,7 +119,7 @@ var pointsOfInterest = [
             ],
             lat: 48.1421086,
             lng: 17.1002348,
-            wikiPage: 'Spiš_Castle'
+            wikiPage: 'Bratislava_Castle'
         },
         {
             name: 'Nitriansky hrad',
@@ -130,7 +129,7 @@ var pointsOfInterest = [
             ],
             lat: 48.19,
             lng: 18.05,
-            wikiPage: 'Spiš_Castle'
+            wikiPage: 'Nitra_Castle'
         },
         {
             name: 'Strečniansky hrad',
@@ -159,7 +158,7 @@ var pointsOfInterest = [
             ],
             lat: 48.40,
             lng: 17.55,
-            wikiPage: 'Spiš_Castle'
+            wikiPage: 'Tematín'
         },
         {
             name: 'Trenčiansky hrad',
@@ -171,7 +170,7 @@ var pointsOfInterest = [
             ],
             lat: 48.53,
             lng: 18.02,
-            wikiPage: 'Spiš_Castle'
+            wikiPage: 'Trenčín_Castle'
         },
         {
             name: 'Považský hrad',
@@ -183,7 +182,7 @@ var pointsOfInterest = [
             ],
             lat: 49.14,
             lng: 18.45,
-            wikiPage: 'Spiš_Castle'
+            wikiPage: 'Považský_hrad'
         },
         {
             name: 'Krásna Hôrka',
@@ -195,7 +194,7 @@ var pointsOfInterest = [
             ],
             lat: 48.39,
             lng: 20.36,
-            wikiPage: 'Spiš_Castle'
+            wikiPage: 'Krásna_Hôrka_Castle'
         },
         {
             name: 'Šarišský hrad',
@@ -207,7 +206,7 @@ var pointsOfInterest = [
             ],
             lat: 49.03,
             lng: 21.10,
-            wikiPage: 'Spiš_Castle'
+            wikiPage: 'Šariš_Castle'
         },
         {
             name: 'Bojnický zámok',
@@ -218,7 +217,7 @@ var pointsOfInterest = [
             ],
             lat: 48.46,
             lng: 18.34,
-            wikiPage: 'Spiš_Castle'
+            wikiPage: 'Bojnice_Castle'
         }
 
     ];
@@ -234,36 +233,75 @@ var viewModel = function() {
         self.points.push(new point(data));
     });
 
-    this.searchedPoint = ko.observable("");
+    self.searchedPoint = ko.observable("");  
 
-    this.wikiPage = ko.observable("Tu bude zobrazeny text");
+    this.setSearchedPoint = function(searchedPoint) {
+        self.searchedPoint(searchedPoint);
+    }
+
+    self.wikiPage = ko.observable();
+    self.wikiHeader = ko.observable();
+    self.wikiUrl = ko.observable();
+    self.wikiUrlText = ko.observable();
+
+    this.setWikiFields = function (wikiPage, wikiHeader, wikiUrl, wikiUrlText){
+        self.wikiPage(wikiPage);
+        self.wikiHeader(wikiHeader);
+        self.wikiUrl(wikiUrl);
+        self.wikiUrlText(wikiUrlText);
+    }
+
+    this.setDefaultWikiFields = function(){
+        self.setWikiFields("Please serach for castle or select one from map or pick one from menu. <br> To reset search click <i class='glyphicon glyphicon-repeat'></i>. ", "Slovak Castles", "", "");
+    }
+
+    this.setDefaultWikiFields();
 
     this.search = function() {
 
+        var searchSelf = this;
         
         var search = this.searchedPoint().toLowerCase();
         var searchedCastleName;
         var visibility = false;
+        var amountOfPositiveSearches;
 
-        ko.utils.arrayForEach(self.points(), function(obj) {
+        /*ko.utils.arrayForEach(self.points(), function(obj) {
             ko.utils.arrayForEach(obj.altNames(), function(altName){
                 if(altName.nick.toLowerCase().indexOf(search) >= 0){
                     //console.dir(altName.nick);
                 };    
             });
             /// tu pracovat na prehladavani hradov na zaklade nickov a filtrovat markre
-        });
+        });*/
+
+        this.amountOfPositiveSearches = 0;
 
         ko.utils.arrayForEach(markers, function(marker) {
             ko.utils.arrayForEach(marker.altNames(), function(altName){
                 if(altName.nick.toLowerCase().indexOf(search) >= 0){
-                    visibility = true; 
+                    searchSelf.visibility = true; 
                 } 
             });
-            marker.setVisible(visibility);
-            visibility = false;            
-            /// tu pracovat na prehladavani hradov na zaklade nickov a filtrovat markre
+            marker.setVisible(searchSelf.visibility);
+            if (searchSelf.visibility === true){
+                searchSelf.amountOfPositiveSearches = searchSelf.amountOfPositiveSearches + 1;
+            };
+            searchSelf.visibility = false;      
         });
+
+        if (this.amountOfPositiveSearches === 1 ) {
+            ko.utils.arrayForEach(markers, function(marker) {
+                ko.utils.arrayForEach(marker.altNames(), function(altName){
+                    if(altName.nick.toLowerCase().indexOf(search) >= 0){
+                        self.searchForWikiPage(marker);
+                    };
+                });
+            });
+        }
+        else {
+            self.setDefaultWikiFields();
+        };  
 
         /*markers.forEach(function(marker) {
             if (marker.title.toLowerCase().indexOf(search) >= 0) {
@@ -281,14 +319,39 @@ var viewModel = function() {
 
     };
 
+    this.disableMarkers = function(marker){
+
+        ko.utils.arrayForEach(markers, function(searchedMarker) {
+            if (searchedMarker.title != marker.title){
+                searchedMarker.setVisible(false);
+            };
+        });
+
+    }
+
+     this.enableMarkers = function(){
+
+        ko.utils.arrayForEach(markers, function(marker) {
+            marker.setVisible(true);
+        });
+
+    }
+
+    this.resetSearch = function(){
+
+        self.enableMarkers();
+        self.setDefaultWikiFields();
+        self.setSearchedPoint("");
+        
+
+    }
+
     this.searchForWikiPage = function(marker){
         
         var wikiRequestTimeout = setTimeout(function(){
             console.log("Failed to get wikipedia resources");
         }, 8000);
-        console.log(marker.title);
         var wikiUrl = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&titles=' + marker.wikiPage();
-        console.log(wikiUrl);
         
         $.ajax({
             url: wikiUrl,
@@ -296,24 +359,38 @@ var viewModel = function() {
             jsonp: "callback",
             success: function( response ) {
                 var article;
-                var extract;
                 $.each(response.query.pages, function(i, item) {
                     article = i;
                 });
-                console.log         (response["query"]["pages"][article]["extract"]);
-                extract = response["query"]["pages"][article]["extract"]
-                self.wikiPage(extract); 
+                
+                self.setWikiFields(
+                    response["query"]["pages"][article]["extract"], 
+                    response["query"]["pages"][article]["title"], 
+                    "http://en.wikipedia.org/wiki/" + response["query"]["pages"][article]["title"], 
+                    "Link: " + response["query"]["pages"][article]["title"]
+                );
+
                 clearTimeout(wikiRequestTimeout);
+                console.log(self.wikiPage());
             }
         });
     }
 
    
-
+    
 
 
 };
 
+
+
 window.vm = new viewModel();
 ko.applyBindings(vm);
+//vm.wikiHeader.extend({ notify: 'always' });
 //ko.applyBindings(viewModel);
+
+$(".form-control").on( 'keydown', function ( e ) {
+    if ( e.keyCode === 27 ) { // ESC
+        vm.resetSearch();
+    }
+});

@@ -10,39 +10,50 @@
 
 </head>
 <body>
-	
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="navbar navbar-fixed-top">
-					
-						<form action="#" class="navbar-form">
-				      		<div class="form-group" style="display:inline">
-				      			<div class="input-group">
-				      				<input type="text" class="form-control" placeholder="What are searching for?" data-bind="textInput: searchedPoint, event: {keyup: search}"><!-- -->
-				      				<div class="input-group-btn" style="width:1%">
-				      					<div class="btn btn-default">
-				      						<i class="glyphicon glyphicon-search"></i>
-				      					</div>
-				      				</div>
-					      		</div>
-							</div>
-				  		</form>
-					
-				</div>	
-			<div>		
-		</div>
+					<form action="#" class="navbar-form">
+			      		<div class="form-group" style="display:inline">
+			      			<div class="input-group">
+			      				<input type="text" class="form-control" placeholder="What are searching for?" data-bind="textInput: searchedPoint, event: {keyup: search}"><!-- -->
+			      				<div class="input-group-btn" style="width:1%">
+			      					<div class="btn btn-default">
+			      						<i class="glyphicon glyphicon-search"></i>
+			      					</div>
+			      					<div class="btn btn-default" title="Restart search">
+			      						<i class="glyphicon glyphicon-repeat" data-bind="click: resetSearch"></i>
+			      					</div>
+			      					  
+			      				</div>
+				      		</div>
+						</div>
+			  		</form>
+
+				</div>					
+			</div>	
+		</div>		
 	
-	<div class="row" id="right">
-		<div id="map" class="col-xs-12 col-sm-9 col-md-9 col-lg-9 "></div>
-	
-		<div class="container-fluid" id="main">	
-		
+		<div class="row" id="right">
+			<div id="map" class="col-xs-12 col-sm-9 col-md-9 col-lg-9 "></div>
 			
-			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" data-bind="text: wikiPage">
-				tu je len tak random text
+			<div class="fly-menu col-xs-12 col-sm-3 col-md-3 col-lg-3 btn-group btn-group-vertical" data-bind="foreach: points" style="top: inherit;">
+				<div  class=" btn-info btn-block" data-bind="text: name" style=" margin-top: 0px; border-bottom-width:1px"></div>
+			</div>
+			
+			<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="top: inherit;">
+				<h2 data-bind="text: wikiHeader"></h2>
+				<p data-bind="html: wikiPage"></p>
+				<p>
+					<a data-bind="attr: { href: wikiUrl, title: wikiHeader}, text: wikiUrlText"></a>
+				</p>
 			</div>
 		</div>
-	</div>
+	</div>	
+
+	
+
 
 	<div class="row" >
 		<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 btn-group btn-group-vertical" data-bind="foreach: points">
