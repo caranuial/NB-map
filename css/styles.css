@@ -6,7 +6,7 @@ html, body  {
 #map{
 	/*width:100%;*/
     /*height:calc(100% - 0);*/
-    height:500px;
+    height:600px;
     position:relative;
     top:30px;
     bottom:0;
@@ -28,15 +28,6 @@ html, body  {
 .navbar-form {
     margin: 0px;
     padding:0px;
-}
-
-.fly-menu{
-    
-    -webkit-transition: all 1s ease-in-out;
-    -moz-transition: all 1s ease-in-out;
-    -ms-transition: all 1s ease-in-out;
-    -o-transition: all 1s ease-in-out;
-    transition: all 1s ease-in-out;
 }
 
 @media only screen and (max-width: 750px) {
